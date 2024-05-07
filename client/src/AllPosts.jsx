@@ -1,10 +1,10 @@
-import React from 'react';
-import { useState, useEffect } from "react";
-// import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-// import Home from "./Home";
-// import AllPosts from "./AllPosts";
-// import NewPost from "./NewPost";
+
+import Home from "./components/Home";
+import AllPosts from "./components/AllPosts";
+import NewPost from "./components/NewPost";
 
 export default function App() {
   const [shows, setShows] = useState([]);

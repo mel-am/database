@@ -1,17 +1,25 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
-export default function ShowForm() {
+export default function NewPost() {
   const [form, setForm] = useState({
-    name: "",
+    username: "",
     location: "",
     actor: "",
     show: "",
-    post: ""
+    post: "",
   });
-  function handleSubmit(event) {
+
+  const handleChange = useCallback(
+    (event) => {
+      setForm({ ...form, [event.target.name]: event.target.value });
+    },
+    [form]
+  );
+
+  async function handleSubmit(event) {
     event.preventDefault();
- fetch("http://localhost:8080/posts", {
+    await fetch("http://localhost:8080/posts", {
       method: "POST",
       body: JSON.stringify(form),
       headers: {
@@ -20,44 +28,44 @@ export default function ShowForm() {
     });
   }
 
-  function handleChange(event) {
-    setForm({ ...form, [event.target.name]: event.target.value });
-  }
+  // function handleChange(event) {
+  //   setForm({ ...form, [event.target.name]: event.target.value });
+  // }
 
   return (
-    
-      <form onSubmit={handleSubmit}>
-        <input
-          name="name"
-          value={form.name}
-          placeholder="Name"
-          onChange={handleChange}
-        />
-        <input
-          name="location"
-          value={form.location}
-          placeholder="Location"
-          onChange={handleChange}
-        />
-        <input
-          name="actor"
-          value={form.actor}
-          placeholder="Actor's name"
-          onChange={handleChange}
-        />
-        <input
-          name="show"
-          value={form.show}
-          placeholder="Show"
-          onChange={handleChange}
-        />
-        <input
-          name="post"
-          value={form.post}
-          placeholder="Post"
-          onChange={handleChange}
-        />
-        <button type="submit">Submit review</button>
-      </form>
+    <form onSubmit={handleSubmit}>
+      <h3>Add a new review</h3>
+      <input
+        name="username"
+        value={form.username}
+        placeholder="Name"
+        onChange={handleChange}
+      />
+      <input
+        name="location"
+        value={form.location}
+        placeholder="Location"
+        onChange={handleChange}
+      />
+      <input
+        name="actor"
+        value={form.actor}
+        placeholder="Actor's name"
+        onChange={handleChange}
+      />
+      <input
+        name="show"
+        value={form.show}
+        placeholder="Show"
+        onChange={handleChange}
+      />
+      <input
+        name="post"
+        value={form.post}
+        placeholder="Post"
+        onChange={handleChange}
+      />
+      <button type="submit">Submit review</button>
+    </form>
   );
 }
