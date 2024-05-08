@@ -1,40 +1,37 @@
-import React from 'react';
-import { useState, useEffect } from "react";
-// import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-// import Home from "./Home";
-// import AllPosts from "./AllPosts";
-// import NewPost from "./NewPost";
+import React, { useState, useEffect } from "react";
+import ShowForm from "./ShowForm";
 
 export default function App() {
+  const [actors, setActors] = useState([]);
   const [shows, setShows] = useState([]);
 
   useEffect(() => {
+    getActors();
     getShows();
+    getPosts();
   }, []);
-
-  async function getShows() {
-    try {
+  async function getActors() {
+    const response = await fetch("http://localhost:8080/actors");
+    const data = await response.json();
+    setActors(data);
+  }
+    async function getShows() {
       const response = await fetch("http://localhost:8080/shows");
-      if (!response.ok) {
-        throw new Error("Failed to fetch shows");
-      }
       const data = await response.json();
       setShows(data);
-    } catch (error) {
-      console.error("Error fetching shows:", error.message);
     }
+
+  async function getPosts() {
+    const response = await fetch("http://localhost:8080/posts");
+    const data = await response.json();
+    setPosts(data);
   }
 
   return (
-    <Router>
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/posts" exact component={AllPosts} />
-        <Route path="/posts/new" exact component={NewPost} />
-      </Switch>
+    <div>
+      <h1>Top TV Shows</h1>
       <div>
-        <h1>Top TV Shows</h1>
         <h2>Top Shows:</h2>
         <ul>
           {shows.map((show) => (
@@ -44,6 +41,7 @@ export default function App() {
           ))}
         </ul>
       </div>
-    </Router>
+  <div><ShowForm /> </div>
+    </div>
   );
 }
